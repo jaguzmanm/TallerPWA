@@ -12,25 +12,29 @@ function Marvel () {
     useEffect(()=>{
         if(!navigator.onLine){
             if(localStorage.getItem("name") === null) {
-                setName("Loading...");
+                setName("Loading...")
             } else {
                 setName(localStorage.getItem("name"));
             }
+
             if(localStorage.getItem("image") === null) {
-                setImage("");
+                setImage("")
             } else {
                 setImage(localStorage.getItem("image"));
             }
+
             if(localStorage.getItem("description") === null) {
-                setDescription("Loading...");
+                setDescription("Loading...")
             } else {
                 setDescription(localStorage.getItem("description"));
             }
+
             if(localStorage.getItem("comics") === null) {
-                setComics([]);
+                setComics([])
             } else {
-                setComics(localStorage.getItem("comics"));
+                setComics(JSON.parse(localStorage.getItem("comics")));
             }
+
         } else {
             const baseUrl = "https://gateway.marvel.com/v1/public/characters";
             const ts = "1234";
@@ -49,6 +53,11 @@ function Marvel () {
                 setComics(hero.comics.items);
                 setImage(hero.thumbnail.path + "." + hero.thumbnail.extension);
                 setDescription(hero.description);
+
+                localStorage.setItem("name", hero.name);
+                localStorage.setItem("image", (hero.thumbnail.path + "." + hero.thumbnail.extension));
+                localStorage.setItem("description", hero.description);
+                localStorage.setItem("comics", JSON.stringify(hero.comics.items));
             })
         }
     }, []);
